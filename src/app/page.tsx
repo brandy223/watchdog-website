@@ -2,6 +2,7 @@
 import Image from 'next/image';
 import {PrismaClient, PrismaPromise, Servers} from '@prisma/client';
 import Link from "next/link";
+import {NavBar} from "@/components/Navbar";
 const prisma = new PrismaClient();
 
 function getNodeServers(): PrismaPromise<Servers[]> {
@@ -13,13 +14,13 @@ export default async function Home() {
 
   return (
     <div>
-        <h1>Home</h1>
-        <h3>Node Servers</h3>
-        <ul>
-            {nodeServers.map((server: Servers) => {
-                return <NodeServer key={server.id} server={server}/>
-            })}
-        </ul>
+        {/*<h1>Home</h1>*/}
+        {/*<h3>Node Servers</h3>*/}
+        {/*<ul>*/}
+        {/*    {nodeServers.map((server: Servers) => {*/}
+        {/*        return <NodeServer key={server.id} server={server}/>*/}
+        {/*    })}*/}
+        {/*</ul>*/}
     </div>
   )
 }
