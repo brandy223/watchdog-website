@@ -15,9 +15,11 @@ model Services {
   id      Int                  @id @default(autoincrement())
   name    String               @db.VarChar(255)
   port    Int?                 @db.MediumInt
-  timeout Int                  @default(5000) @db.MediumInt
+  type    Int                  @db.TinyInt @default(0)
+  url     String?              @db.VarChar(255)
   servers ServicesOfServers[]
   objects ServicesAndObjects[]
+  datas   ServicesAndData[]
 }
 
 enum ServerStatus {
@@ -58,7 +60,7 @@ model ServersOfJobs {
   @@id([serverId, jobId])
 }
 
-model Objects {
+model ServicesObjects {
   id          Int                  @id @default(autoincrement())
   name        String               @db.VarChar(255)
   description String?              @db.VarChar(255)
@@ -68,35 +70,58 @@ model Objects {
 model ServicesAndObjects {
   serviceId Int
   objectId  Int
-  service   Services @relation(fields: [serviceId], references: [id])
-  object    Objects  @relation(fields: [objectId], references: [id])
+  service   Services        @relation(fields: [serviceId], references: [id])
+  object    ServicesObjects @relation(fields: [objectId], references: [id])
 
   @@id([serviceId, objectId])
+}
+
+model ServicesData {
+  id             Int               @id @default(autoincrement())
+  name           String            @db.VarChar(255)
+  description    String?           @db.VarChar(255)
+  isUrlInService Boolean           @default(false)
+  url            String?           @db.VarChar(255)
+  nameInResponse String?           @db.VarChar(255)
+  services       ServicesAndData[]
+  stateValues    StateValues[]
+}
+
+model ServicesAndData {
+  serviceId Int
+  dataId    Int
+  service   Services     @relation(fields: [serviceId], references: [id])
+  data      ServicesData @relation(fields: [dataId], references: [id])
+
+  @@id([serviceId, dataId])
 }
 
 model Jobs {
   id          Int                 @id @default(autoincrement())
   name        String              @db.VarChar(255)
-  interval    Int                 @db.MediumInt
-  timeout     Int                 @db.MediumInt
+  interval    Int?                @db.MediumInt
   services    ServicesOfServers[]
   stateValues StateValues[]
   servers     ServersOfJobs[]
 }
 
 model StateValues {
-  id          Int       @id @default(autoincrement())
-  name        String    @db.VarChar(255)
-  description String?   @db.VarChar(255)
-  value       String    @db.VarChar(255)
-  typeOfValue Int       @db.TinyInt
-  priority    Int       @db.TinyInt
-  jobId       Int?
-  serverId    Int?
-  scenarioId  Int
-  job         Jobs?     @relation(fields: [jobId], references: [id])
-  server      Servers?  @relation(fields: [serverId], references: [id])
-  scenario    Scenarios @relation(fields: [scenarioId], references: [id])
+  id               Int              @id @default(autoincrement())
+  name             String           @db.VarChar(255)
+  description      String?          @db.VarChar(255)
+  value            String           @db.VarChar(255)
+  typeOfValue      Int              @db.TinyInt
+  priority         Int              @db.TinyInt
+  jobId            Int?
+  serverId         Int?
+  scenarioId       Int
+  dataId           Int?
+  pfSenseServiceId Int?
+  job              Jobs?            @relation(fields: [jobId], references: [id])
+  server           Servers?         @relation(fields: [serverId], references: [id])
+  scenario         Scenarios        @relation(fields: [scenarioId], references: [id])
+  data             ServicesData?    @relation(fields: [dataId], references: [id])
+  pfSenseService   PfSenseServices? @relation(fields: [pfSenseServiceId], references: [id])
 }
 
 model Scenarios {
@@ -170,4 +195,29 @@ model ActorsListsForScenarios {
   priority           Int                @db.TinyInt
 
   @@id([actionId, scenarioId, listId])
+}
+
+model PfSenses {
+  id              Int                  @id @default(autoincrement())
+  ip              String               @unique @db.VarChar(64)
+  name            String?              @db.VarChar(255)
+  pfSenseServices PfSenseAndServices[]
+}
+
+model PfSenseServices {
+  id               Int                  @id @default(autoincrement())
+  name             String               @db.VarChar(255)
+  description      String?              @db.VarChar(255)
+  pfSenseRequestId Int?
+  pfSenses         PfSenseAndServices[]
+  stateValues      StateValues[]
+}
+
+model PfSenseAndServices {
+  pfSenseId        Int
+  pfSenseServiceId Int
+  pfSense          PfSenses        @relation(fields: [pfSenseId], references: [id])
+  pfSenseService   PfSenseServices @relation(fields: [pfSenseServiceId], references: [id])
+
+  @@id([pfSenseId, pfSenseServiceId])
 }
