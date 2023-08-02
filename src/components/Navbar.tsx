@@ -1,13 +1,13 @@
 import React from "react";
 import Image from "next/image";
 import {MainServer} from "@/components/MainServer";
+import "../styles/Navbar.css"
 
 export const NavBar = ({ className }) => {
     return (
-
         <nav
-            className="bg-mainGray fixed w-full z-20 top-0 left-0 border-b border-gray-200">
-            <div className="flex flex-wrap items-center justify-between p-4">
+            className="bg-mainGray w-full z-20 top-0 left-0 border-b border-gray-200">
+            <div className="navbar flex flex-wrap items-center justify-between p-4">
                 <a href="/" className="flex items-center">
                     <Image src={"https://flowbite.com/docs/images/logo.svg" } alt={"Flowbite Logo"} width={30} height={30} />
                     <span
@@ -22,20 +22,20 @@ export const NavBar = ({ className }) => {
                     <ul className="flex flex-col p-4 md:p-0 mt-4 font-medium rounded-lg bg-mainGray md:flex-row md:space-x-8 md:mt-0 md:border-0">
                         <li className="active:border-solid active:border-b-2 active:border-gray-300">
                             <a href="/"
-                               className="block py-2 pl-3 pr-4 font-family: outfit text-bold text-mainWhite hover:text-gray-400 rounded"
+                               className="block py-2 pl-3 pr-4 font-family: outfit text-bold text-mainWhite hover:text-gray-300 rounded hover:-translate-y-0.5 hover:duration-300"
                                aria-current="page">Home
                             </a>
                             <hr />
                         </li>
                         <li className="active:border-solid active:border-b-2 active:border-gray-300">
                             <a href="/admin"
-                               className="block py-2 pl-3 pr-4 text-bold text-mainWhite rounded hover:text-gray-400">Admin
+                               className="block py-2 pl-3 pr-4 text-bold text-mainWhite rounded hover:text-gray-300 hover:-translate-y-0.5 hover:duration-300">Admin
                             </a>
                             <hr />
                         </li>
                         <li>
                             <a href="/config"
-                               className="block py-2 pl-3 pr-4 text-bold text-mainWhite rounded hover:text-gray-400">Config
+                               className="block py-2 pl-3 pr-4 text-bold text-mainWhite rounded hover:text-gray-300 hover:-translate-y-0.5 hover:duration-300">Config
                             </a>
                             <hr />
                         </li>
