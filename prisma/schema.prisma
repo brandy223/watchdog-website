@@ -1,0 +1,223 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "debian-openssl-1.0.x"]
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Services {
+  id      Int                  @id @default(autoincrement())
+  name    String               @db.VarChar(255)
+  port    Int?                 @db.MediumInt
+  type    Int                  @db.TinyInt @default(0)
+  url     String?              @db.VarChar(255)
+  servers ServicesOfServers[]
+  objects ServicesAndObjects[]
+  datas   ServicesAndData[]
+}
+
+enum ServerStatus {
+  Normal
+  Node
+  Central
+}
+
+model Servers {
+  id          Int                 @id @default(autoincrement())
+  ipAddr      String              @unique @db.VarChar(64)
+  type        ServerStatus        @default(Normal)
+  port        Int?                @db.MediumInt
+  priority    Int?                @db.TinyInt
+  services    ServicesOfServers[]
+  jobs        ServersOfJobs[]
+  stateValues StateValues[]
+}
+
+model ServicesOfServers {
+  serviceId Int
+  serverId  Int
+  service   Services @relation(fields: [serviceId], references: [id])
+  server    Servers  @relation(fields: [serverId], references: [id])
+
+  jobId Int?  @unique
+  job   Jobs? @relation(fields: [jobId], references: [id])
+
+  @@id([serviceId, serverId])
+}
+
+model ServersOfJobs {
+  serverId Int
+  jobId    Int
+  server   Servers @relation(fields: [serverId], references: [id])
+  job      Jobs    @relation(fields: [jobId], references: [id])
+
+  @@id([serverId, jobId])
+}
+
+model ServicesObjects {
+  id          Int                  @id @default(autoincrement())
+  name        String               @db.VarChar(255)
+  description String?              @db.VarChar(255)
+  services    ServicesAndObjects[]
+}
+
+model ServicesAndObjects {
+  serviceId Int
+  objectId  Int
+  service   Services        @relation(fields: [serviceId], references: [id])
+  object    ServicesObjects @relation(fields: [objectId], references: [id])
+
+  @@id([serviceId, objectId])
+}
+
+model ServicesData {
+  id             Int               @id @default(autoincrement())
+  name           String            @db.VarChar(255)
+  description    String?           @db.VarChar(255)
+  isUrlInService Boolean           @default(false)
+  url            String?           @db.VarChar(255)
+  nameInResponse String?           @db.VarChar(255)
+  services       ServicesAndData[]
+  stateValues    StateValues[]
+}
+
+model ServicesAndData {
+  serviceId Int
+  dataId    Int
+  service   Services     @relation(fields: [serviceId], references: [id])
+  data      ServicesData @relation(fields: [dataId], references: [id])
+
+  @@id([serviceId, dataId])
+}
+
+model Jobs {
+  id          Int                 @id @default(autoincrement())
+  name        String              @db.VarChar(255)
+  interval    Int?                @db.MediumInt
+  services    ServicesOfServers[]
+  stateValues StateValues[]
+  servers     ServersOfJobs[]
+}
+
+model StateValues {
+  id               Int              @id @default(autoincrement())
+  name             String           @db.VarChar(255)
+  description      String?          @db.VarChar(255)
+  value            String           @db.VarChar(255)
+  typeOfValue      Int              @db.TinyInt
+  priority         Int              @db.TinyInt
+  jobId            Int?
+  serverId         Int?
+  scenarioId       Int
+  dataId           Int?
+  pfSenseServiceId Int?
+  job              Jobs?            @relation(fields: [jobId], references: [id])
+  server           Servers?         @relation(fields: [serverId], references: [id])
+  scenario         Scenarios        @relation(fields: [scenarioId], references: [id])
+  data             ServicesData?    @relation(fields: [dataId], references: [id])
+  pfSenseService   PfSenseServices? @relation(fields: [pfSenseServiceId], references: [id])
+}
+
+model Scenarios {
+  id          Int                  @id @default(autoincrement())
+  name        String               @db.VarChar(255)
+  description String?              @db.VarChar(255)
+  stateValues StateValues[]
+  actions     ActionsOfScenarios[]
+}
+
+model Actions {
+  id          Int                  @id @default(autoincrement())
+  name        String               @db.VarChar(255)
+  description String?              @db.VarChar(255)
+  scenarios   ActionsOfScenarios[]
+}
+
+model ActionsOfScenarios {
+  scenarioId Int
+  actionId   Int
+  scenario   Scenarios                 @relation(fields: [scenarioId], references: [id])
+  action     Actions                   @relation(fields: [actionId], references: [id])
+  actors     ActorsForScenarios[]
+  lists      ActorsListsForScenarios[]
+
+  @@id([actionId, scenarioId])
+}
+
+model Actors {
+  id      Int                  @id @default(autoincrement())
+  name    String               @db.VarChar(255)
+  email   String?              @db.VarChar(255)
+  number  String?              @db.VarChar(255)
+  lists   ActorsAndLists[]
+  actions ActorsForScenarios[]
+}
+
+model ActorsLists {
+  id      Int                       @id @default(autoincrement())
+  name    String                    @db.VarChar(255)
+  actors  ActorsAndLists[]
+  actions ActorsListsForScenarios[]
+}
+
+model ActorsAndLists {
+  actorId Int
+  listId  Int
+  actor   Actors      @relation(fields: [actorId], references: [id])
+  list    ActorsLists @relation(fields: [listId], references: [id])
+
+  @@id([actorId, listId])
+}
+
+model ActorsForScenarios {
+  actorId            Int
+  actionId           Int
+  scenarioId         Int
+  actor              Actors             @relation(fields: [actorId], references: [id])
+  actionsOfScenarios ActionsOfScenarios @relation(fields: [scenarioId, actionId], references: [scenarioId, actionId])
+  priority           Int                @db.TinyInt
+
+  @@id([actionId, scenarioId, actorId])
+}
+
+model ActorsListsForScenarios {
+  listId             Int
+  actionId           Int
+  scenarioId         Int
+  list               ActorsLists        @relation(fields: [listId], references: [id])
+  actionsOfScenarios ActionsOfScenarios @relation(fields: [scenarioId, actionId], references: [scenarioId, actionId])
+  priority           Int                @db.TinyInt
+
+  @@id([actionId, scenarioId, listId])
+}
+
+model PfSenses {
+  id              Int                  @id @default(autoincrement())
+  ip              String               @unique @db.VarChar(64)
+  name            String?              @db.VarChar(255)
+  pfSenseServices PfSenseAndServices[]
+}
+
+model PfSenseServices {
+  id               Int                  @id @default(autoincrement())
+  name             String               @db.VarChar(255)
+  description      String?              @db.VarChar(255)
+  pfSenseRequestId Int?
+  pfSenses         PfSenseAndServices[]
+  stateValues      StateValues[]
+}
+
+model PfSenseAndServices {
+  pfSenseId        Int
+  pfSenseServiceId Int
+  pfSense          PfSenses        @relation(fields: [pfSenseId], references: [id])
+  pfSenseService   PfSenseServices @relation(fields: [pfSenseServiceId], references: [id])
+
+  @@id([pfSenseId, pfSenseServiceId])
+}
