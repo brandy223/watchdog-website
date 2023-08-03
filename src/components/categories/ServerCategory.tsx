@@ -1,9 +1,9 @@
 import ServerServiceCell from "@/components/cells/ServerServiceCell";
-import {PrismaClient, Services, ServicesOfServers} from "@prisma/client";
-
-const prisma = new PrismaClient();
+import {Services, ServicesOfServers} from "@prisma/client";
+import {prisma} from "@/app/api/db";
 
 async function getServicesOfServerById(id: number): Promise<Services[]> {
+    "use server"
     const services: ServicesOfServers[] = await prisma.servicesOfServers.findMany({
         where: {
             serverId: id

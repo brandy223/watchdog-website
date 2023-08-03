@@ -1,10 +1,10 @@
 
-import {PrismaClient, Servers, ServicesOfServers} from "@prisma/client";
+import {Servers, ServicesOfServers} from "@prisma/client";
 import ServerCategory from "@/components/categories/ServerCategory";
-
-const prisma = new PrismaClient();
+import {prisma} from "@/app/api/db";
 
 async function getAllServersPointedByJobs(): Promise<Servers[]> {
+    "use server"
     const serversIds: ServicesOfServers[] = await prisma.servicesOfServers.findMany({
         where: {
             jobId: {not: null}

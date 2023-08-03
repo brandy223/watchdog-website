@@ -1,10 +1,10 @@
 
-import {PfSenseAndServices, PfSenses, PfSenseServices, PrismaClient} from "@prisma/client";
+import {PfSenseAndServices, PfSenses, PfSenseServices} from "@prisma/client";
 import PfSenseServiceCell from "@/components/cells/PfSenseServiceCell";
-
-const prisma = new PrismaClient();
+import {prisma} from "@/app/api/db";
 
 async function getPfSenseServicesByPfSenseId(id: number): Promise<PfSenseServices[]> {
+    "use server"
     const pfSenseServicesIds: PfSenseAndServices[] = await prisma.pfSenseAndServices.findMany({
         where: {
             pfSenseId: id

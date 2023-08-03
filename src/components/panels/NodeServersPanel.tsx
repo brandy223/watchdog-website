@@ -1,10 +1,10 @@
 
-import { PrismaClient, Servers, ServersOfJobs } from "@prisma/client";
+import { Servers, ServersOfJobs } from "@prisma/client";
 import NodeServerCell from "@/components/cells/NodeServerCell";
-
-const prisma = new PrismaClient();
+import {prisma} from "@/app/api/db";
 
 async function getAllNodeServersAssignedToJobs(): Promise<Servers[]> {
+    "use server"
     const serversIds: ServersOfJobs[] = await prisma.serversOfJobs.findMany();
     const uniqueServersIds: number[] = serversIds.map(server => server.serverId).filter((value, index, self) => self.indexOf(value) === index);
     return prisma.servers.findMany({

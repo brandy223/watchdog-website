@@ -1,10 +1,10 @@
 
-import {PrismaClient, Services, ServicesAndData} from "@prisma/client";
+import {Services, ServicesAndData} from "@prisma/client";
 import ServiceDataCategory from "@/components/categories/ServiceDataCategory";
-
-const prisma = new PrismaClient();
+import {prisma} from "@/app/api/db";
 
 async function getAllAssignedServices(): Promise<Services[]> {
+    "use server"
     const servicesIds: ServicesAndData[] = await prisma.servicesAndData.findMany();
     const uniqueServicesIds: number[] = [...new Set(servicesIds.map((service: ServicesAndData) => service.serviceId))];
     return prisma.services.findMany({

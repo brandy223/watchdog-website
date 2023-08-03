@@ -1,10 +1,10 @@
 
-import {PfSenseAndServices, PfSenses, PrismaClient} from "@prisma/client";
+import {PfSenseAndServices, PfSenses} from "@prisma/client";
 import PfSenseCategory from "@/components/categories/PfSenseCategory";
-
-const prisma = new PrismaClient();
+import {prisma} from "@/app/api/db";
 
 async function getAssignedPfSenses(): Promise<PfSenses[]> {
+    "use server"
     const pfSensesIds: PfSenseAndServices[] = await prisma.pfSenseAndServices.findMany();
     const uniquePfSensesIds: number[] = pfSensesIds.map(pfSense => pfSense.pfSenseId).filter((value, index, self) => self.indexOf(value) === index);
     return prisma.pfSenses.findMany({
