@@ -1,17 +1,15 @@
 
-'use client'
-
-import React, {useState, useEffect} from "react";
-import { useSocketConnection, useSocketEvent } from "@/api/socket";
-
 export const MainServer = () => {
-    const [mainServer, setMainServer] = useState<string>("192.168.10.54");
+    // const [mainServer, setMainServer] = useState<string>("192.168.10.54");
+    //
+    // const socket = useSocketConnection("http://192.168.10.44:3001");
 
-    const socket = useSocketConnection("http://localhost:3001");
+    // useSocketEvent(socket, "test", (data: string) => {
+    //     setMainServer(data);
+    // });
+    // const mainServer:string = "192.168.10.58";
 
-    useSocketEvent(socket, "mainServer", (data: string) => {
-        setMainServer(data);
-    });
+    const mainServer: string = "192.168.10.58";
 
     return (
         <div>
