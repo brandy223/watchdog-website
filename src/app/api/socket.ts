@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from 'react';
 import io, {Socket} from 'socket.io-client';
 
@@ -6,7 +7,9 @@ export const useSocketConnection = (serverUrl: string) => {
 
     useEffect(() => {
         const newSocket = io(serverUrl);
+
         setSocket(newSocket);
+        newSocket.emit("browser_connection");
 
         return () => {
             newSocket.disconnect();
@@ -19,12 +22,12 @@ export const useSocketConnection = (serverUrl: string) => {
 export const useSocketEvent = (socket: Socket | null, event: string, callback: Function) => {
     useEffect(() => {
         if (socket) {
-            socket.on(event, (data: any) => callback(data));
+            socket.on(event, callback);
         }
 
         return () => {
             if (socket) {
-                socket.off(event, (data: any) => callback(data));
+                socket.off(event, callback);
             }
         };
     }, [socket, event, callback]);
