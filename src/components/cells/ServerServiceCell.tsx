@@ -2,11 +2,12 @@
 type ServerServiceCellProps = {
     id: number
     name: string
+    parentId: number
 }
 
-export default function ServerServiceCell({id, name}: ServerServiceCellProps) {
+export default function ServerServiceCell({id, name, parentId}: ServerServiceCellProps) {
     return (
-        <div className="category-main-field-sub-item flex flex-row w-full">
+        <div className="category-main-field-sub-item flex flex-row w-full" id={`2-true-${id}-${parentId}`}>
             <div className="title w-full flex items-center">
                 {name}
             </div>

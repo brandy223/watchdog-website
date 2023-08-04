@@ -24,11 +24,11 @@ type ServerCategoryProps = {
 export default async function ServerCategory({id, ip}: ServerCategoryProps) {
     const services: Services[] = await getServicesOfServerById(id);
     return (
-        <div className="category-main-field-item w-full flex flex-col justify-center items-center">
+        <div className="category-main-field-item w-full flex flex-col justify-center items-center" id={`1-false-${id}-0`}>
             <div className="category-main-field-item-title">{ip}</div>
             <div className="category-main-field flex flex-col">
                 {services.map(
-                    (service: Services) => <ServerServiceCell key={service.id} id={service.id} name={service.name} />
+                    (service: Services) => <ServerServiceCell key={service.id} id={service.id} name={service.name} parentId={id} />
                 )}
             </div>
         </div>

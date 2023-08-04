@@ -3,11 +3,12 @@ type PfSenseServiceCellProps = {
     id: number
     name: string
     pfSenseRequestId: number | null
+    parentId: number
 }
 
-export default function PfSenseServiceCell({id, name, pfSenseRequestId}: PfSenseServiceCellProps) {
+export default function PfSenseServiceCell({id, name, pfSenseRequestId, parentId}: PfSenseServiceCellProps) {
     return (
-        <div className="category-main-field-sub-item flex flex-row w-full">
+        <div className="category-main-field-sub-item flex flex-row w-full" id={`3-true-${id}-${parentId}`}>
             <div className="title w-full flex flex-row items-center">
                 {name}
                 {pfSenseRequestId !== null &&

@@ -10,6 +10,18 @@ export default function SocketEventHandler() {
     const socket = useSocketConnection("http://192.168.10.44:3001");
 
     useSocketEvent(socket, "room_broadcast", (data: any) => {
-        eventEmitter.emit("room_broadcast", data);
+        switch(data.messageType) {
+            case 1:
+
+                break;
+            case 2:
+                break;
+            case 3:
+                break;
+            case 4:
+                break;
+            default:
+                break;
+        }
     });
 }

@@ -6,7 +6,7 @@ type NodeServerCellProps = {
 
 export default function ServerServiceCell({id, ip}: NodeServerCellProps) {
     return (
-        <div className="category-main-field-sub-item flex flex-row w-full">
+        <div className="category-main-field-sub-item flex flex-row w-full" ref={`1-false-${id}-0`}>
             <div className="title w-full flex items-center">
                 {ip}
             </div>
