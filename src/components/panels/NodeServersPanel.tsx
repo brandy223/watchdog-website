@@ -19,7 +19,7 @@ export default async function NodeServersPanel() {
             <div className="category-title">Node Servers</div>
             <div className="category-main-field flex flex-col">
                 {nodeServers.map(
-                    (server: Servers) => <NodeServerCell key={server.id} id={server.id} ip={server.ipAddr} />
+                    (server: Servers) => <NodeServerCell key={server.id} id={`1-false-${server.id}-0`} ip={server.ipAddr} />
                 )}
             </div>
         </div>

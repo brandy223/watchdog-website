@@ -1,14 +1,55 @@
 
+"use client"
+
+import {useEffect, useState} from "react";
+import {componentsData} from "@/app/api/SocketEventHandler";
+
 type PfSenseServiceCellProps = {
-    id: number
+    id: string
     name: string
     pfSenseRequestId: number | null
-    parentId: number
 }
 
-export default function PfSenseServiceCell({id, name, pfSenseRequestId, parentId}: PfSenseServiceCellProps) {
+export default function PfSenseServiceCell({id, name, pfSenseRequestId}: PfSenseServiceCellProps) {
+    const [ status, setStatus] = useState<string>("KO");
+    // TODO: Need to change initial state (wrong one)
+    const greenValue: string = "#75EB18"
+    const redValue: string = "#EB1818"
+    const orangeValue: string = "#EB9E18"
+    const [ color, setColor ] = useState<string>(redValue);
+
+    useEffect(() => {
+        setInterval(() => {
+
+            console.log(componentsData);
+            console.log(id);
+
+            if (!componentsData.has(id)) {
+                componentsData.set(id, status);
+                return;
+            }
+            if ((componentsData.get(id) as string) !== status) {
+                setStatus(componentsData.get(id) as string);
+            }
+
+            switch(status) {
+                case "OK":
+                    setColor(greenValue);
+                    break;
+                case "KO":
+                    setColor(redValue);
+                    break;
+                case "PENDING":
+                    setColor(orangeValue);
+                    break;
+                default:
+                    break;
+            }
+        }, 5000);
+    });
+
     return (
-        <div className="category-main-field-sub-item flex flex-row w-full" id={`3-true-${id}-${parentId}`}>
+        <div className="category-main-field-sub-item flex flex-row w-full">
             <div className="title w-full flex flex-row items-center">
                 {name}
                 {pfSenseRequestId !== null &&
@@ -19,7 +60,7 @@ export default function PfSenseServiceCell({id, name, pfSenseRequestId, parentId
             </div>
             <svg className="mr-2" xmlns="http://www.w3.org/2000/svg" width="34" height="34" viewBox="0 0 34 34" fill="none">
                 <g filter="url(#filter0_f_236_28)">
-                    <circle cx="17" cy="17" r="15" fill="#75EB18" fillOpacity="0.76"/>
+                    <circle cx="17" cy="17" r="15" fill={color} fillOpacity="0.76"/>
                 </g>
                 <defs>
                     <filter id="filter0_f_236_28" x="0" y="0" width="34" height="34" filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">

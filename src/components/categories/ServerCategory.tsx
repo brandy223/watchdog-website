@@ -1,34 +1,54 @@
-import ServerServiceCell from "@/components/cells/ServerServiceCell";
-import {Services, ServicesOfServers} from "@prisma/client";
-import {prisma} from "@/app/api/db";
 
-async function getServicesOfServerById(id: number): Promise<Services[]> {
-    "use server"
-    const services: ServicesOfServers[] = await prisma.servicesOfServers.findMany({
-        where: {
-            serverId: id
-        }
-    });
-    return prisma.services.findMany({
-        where: {
-            id: {in: services.map(service => service.serviceId)}
-        }
-    })
-}
+"use client"
+
+import ServerServiceCell from "@/components/cells/ServerServiceCell";
+import {Services} from "@prisma/client";
+import {useEffect, useState} from "react";
+import {componentsData} from "@/app/api/SocketEventHandler";
 
 type ServerCategoryProps = {
-    id: number
+    id: string
     ip: string
+    services: Services[]
 }
 
-export default async function ServerCategory({id, ip}: ServerCategoryProps) {
-    const services: Services[] = await getServicesOfServerById(id);
+export default function ServerCategory({id, ip, services}: ServerCategoryProps) {
+    const [ status, setStatus] = useState<string>("KO");
+    const [ color, setColor ] = useState<string>("errorRed");
+
+    useEffect(() => {
+        setInterval(() => {
+            if (!componentsData.has(id)) {
+                componentsData.set(id, status);
+                return;
+            }
+            if ((componentsData.get(id) as string) !== status) {
+                setStatus(componentsData.get(id) as string);
+            }
+
+            switch(status) {
+                case "OK":
+                    setColor("validGreen");
+                    break;
+                case "KO":
+                    setColor("errorRed");
+                    break;
+                case "PENDING":
+                    setColor("warningYellow");
+                    break;
+                default:
+                    break;
+            }
+        }, 5000);
+        // TODO: When status KO, need to change state of all services to KO
+    });
+
     return (
-        <div className="category-main-field-item w-full flex flex-col justify-center items-center" id={`1-false-${id}-0`}>
+        <div className={"category-main-field-item w-full flex flex-col justify-center items-center border-4 border-solid border-" + color}>
             <div className="category-main-field-item-title">{ip}</div>
             <div className="category-main-field flex flex-col">
                 {services.map(
-                    (service: Services) => <ServerServiceCell key={service.id} id={service.id} name={service.name} parentId={id} />
+                    (service: Services) => <ServerServiceCell key={service.id} id={`2-true-${service.id}-${id.split("-")[2]}`} name={service.name} />
                 )}
             </div>
         </div>

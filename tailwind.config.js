@@ -18,6 +18,8 @@ module.exports = {
         mainWhite: '#EEEEEE',
         mainRed: '#DF2121',
         validGreen: '#75EB18',
+        errorRed: '#EB1818',
+        warningYellow: '#EBD118',
       },
     },
   },

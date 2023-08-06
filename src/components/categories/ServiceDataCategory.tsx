@@ -24,7 +24,7 @@ export default async function ServiceDataCategory({id, name}: ServiceDataCategor
             <div className="category-main-field-item-title">{name}</div>
             <div className="category-main-field flex flex-col">
                 {servicesData.map((serviceData: ServicesData) =>
-                    <ServiceDataCell key={serviceData.id} id={serviceData.id} name={serviceData.name} parentId={id} />
+                    <ServiceDataCell key={serviceData.id} id={`4-true-${serviceData.id}-${id}`} name={serviceData.name} />
                 )}
             </div>
         </div>

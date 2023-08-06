@@ -1,37 +1,56 @@
 
-import {PfSenseAndServices, PfSenses, PfSenseServices} from "@prisma/client";
-import PfSenseServiceCell from "@/components/cells/PfSenseServiceCell";
-import {prisma} from "@/app/api/db";
+"use client"
 
-async function getPfSenseServicesByPfSenseId(id: number): Promise<PfSenseServices[]> {
-    "use server"
-    const pfSenseServicesIds: PfSenseAndServices[] = await prisma.pfSenseAndServices.findMany({
-        where: {
-            pfSenseId: id
-        }
-    });
-    return prisma.pfSenseServices.findMany({
-        where: {
-            id: {in: pfSenseServicesIds.map(pfSenseService => pfSenseService.pfSenseServiceId)}
-        }
-    });
-}
+import {PfSenseServices} from "@prisma/client";
+import PfSenseServiceCell from "@/components/cells/PfSenseServiceCell";
+import {useEffect, useState} from "react";
+import {componentsData} from "@/app/api/SocketEventHandler";
 
 type PfSenseCategoryProps = {
-    id: number
+    id: string
     ip: string
+    pfSenseServices: PfSenseServices[]
 }
 
-export default async function PfSenseCategory({id, ip}: PfSenseCategoryProps) {
-    const pfSenseServices: PfSenseServices[] = await getPfSenseServicesByPfSenseId(id);
+export default function PfSenseCategory({id, ip, pfSenseServices}: PfSenseCategoryProps) {
+    const [ status, setStatus] = useState<string>("KO");
+    const [ color, setColor ] = useState<string>("errorRed");
+
+    useEffect(() => {
+        setInterval(() => {
+            if (!componentsData.has(id)) {
+                componentsData.set(id, status);
+                return;
+            }
+            if ((componentsData.get(id) as string) !== status) {
+                setStatus(componentsData.get(id) as string);
+            }
+
+            switch(status) {
+                case "OK":
+                    setColor("validGreen");
+                    break;
+                case "KO":
+                    setColor("errorRed");
+                    break;
+                case "PENDING":
+                    setColor("warningYellow");
+                    break;
+                default:
+                    break;
+            }
+        }, 5000);
+        // TODO: When status KO, need to change state of all services to KO
+    });
+
     return (
-        <div className="category-main-field-item w-full flex flex-col justify-center items-center" id={`1-false-${id}-1`}>
+        <div className={"category-main-field-item w-full flex flex-col justify-center items-center border-4 border-solid border-" + color}>
             <div className="category-main-field-item-title">{ip}</div>
             <div className="category-main-field flex flex-col">
                 {pfSenseServices.map(
                     (pfSenseService: PfSenseServices) =>
                         <PfSenseServiceCell
-                            key={pfSenseService.id} id={pfSenseService.id} name={pfSenseService.name} pfSenseRequestId={pfSenseService.pfSenseRequestId} parentId={id}
+                            key={pfSenseService.id} id={`3-true-${pfSenseService.id}-${id.split("-")[2]}`} name={pfSenseService.name} pfSenseRequestId={pfSenseService.pfSenseRequestId}
                         />
                 )}
             </div>
