@@ -17,7 +17,7 @@ export default function ServerServiceCell({id, name}: ServerServiceCellProps) {
 
     useEffect(() => {
         setInterval(() => {
-            switch(componentsData.get(id) ?? "false") {
+            switch((componentsData.get(id) ?? ["false"])[0]) {
                 case "true":
                     setColor(greenValue);
                     break;
@@ -31,7 +31,7 @@ export default function ServerServiceCell({id, name}: ServerServiceCellProps) {
                     break;
             }
         }, 5000);
-    });
+    }, [id]);
 
     return (
         <div className="category-main-field-sub-item flex flex-row w-full">

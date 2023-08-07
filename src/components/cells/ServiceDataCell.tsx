@@ -15,14 +15,14 @@ export default function ServiceDataCell({id, name}: ServiceDataCellProps) {
     useEffect(() => {
         setInterval(() => {
             if (!componentsData.has(id)) {
-                componentsData.set(id, value);
+                componentsData.set(id, [value]);
                 return;
             }
-            if ((componentsData.get(id) as string) !== value) {
-                setValue(componentsData.get(id) as string);
+            if ((componentsData.get(id) ?? ["false"])[0] !== value) {
+                setValue((componentsData.get(id) ?? ["false"])[0]);
             }
         }, 1000);
-    });
+    }, [id]);
 
     return (
         <div className="category-main-field-sub-item flex flex-row w-full">
