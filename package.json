@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbo --show-all",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
@@ -14,9 +14,12 @@
     "@types/react": "18.2.17",
     "@types/react-dom": "18.2.7",
     "autoprefixer": "10.4.14",
+    "child_process": "^1.0.2",
     "eslint": "^8.45.0",
     "eslint-config-next": "13.4.12",
+    "net": "^1.0.2",
     "next": "13.4.12",
+    "ping": "^0.4.4",
     "postcss": "8.4.27",
     "prisma": "^5.0.0",
     "react": "18.2.0",
@@ -25,5 +28,8 @@
     "tailwind-merge": "^1.14.0",
     "tailwindcss": "3.3.3",
     "typescript": "5.1.6"
+  },
+  "browser":{
+    "child_process": false
   }
 }
