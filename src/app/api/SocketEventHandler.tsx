@@ -2,24 +2,30 @@
 "use client"
 
 import {useSocketConnection, useSocketEvent} from "@/app/api/socket";
+import {compareArrays} from "@/utils";
 
-export const componentsData = new Map<string, string>;
+export const componentsData = new Map<string, string[]>;
 
 export default function SocketEventHandler() {
     const socket = useSocketConnection("http://192.168.10.44:3001");
-    useSocketEvent(socket, "room_broadcast", (data: any) => {
+    useSocketEvent(socket, "room_broadcast", async (data: any) => {
         if (data === null) return;
 
         let componentId: string = "";
         switch(data.messageType) {
             case 1:
                 componentId = `1-false-${data.server.id}-0`;
+                let stringValues: string[];
                 if (!componentsData.has(componentId)) {
-                    componentsData.set(componentId, data.status);
+                    stringValues = [data.status];
+                    data.pingInfo.map((data: string) => stringValues.push(data));
+                    componentsData.set(componentId, stringValues);
                     return;
                 }
-                if (componentsData.get(componentId) !== data.status) {
-                    componentsData.set(componentId, data.status);
+                if ((componentsData.get(componentId) ?? [""])[0] !== data.status) {
+                    stringValues = [data.status];
+                    data.pingInfo.map((data: string) => stringValues.push(data));
+                    componentsData.set(componentId, stringValues);
                 }
                 return;
             case 2:
@@ -31,11 +37,11 @@ export default function SocketEventHandler() {
             case 4:
                 componentId = `4-true-${data.serviceData.id}-${data.service.id}`;
                 if (!componentsData.has(componentId)) {
-                    componentsData.set(componentId, data.value);
+                    componentsData.set(componentId, [data.value]);
                     return;
                 }
                 if (componentsData.get(componentId) !== data.value) {
-                    componentsData.set(componentId, data.value);
+                    componentsData.set(componentId, [data.value]);
                 }
                 return;
             default:
@@ -43,11 +49,16 @@ export default function SocketEventHandler() {
         }
 
         if (!componentsData.has(componentId)) {
-            componentsData.set(componentId, data.status[0]);
+            componentsData.set(componentId, data.status);
             return;
         }
-        if (componentsData.get(componentId) !== data.status[0]) {
-            componentsData.set(componentId, data.status[0]);
+        if (!(await compareArrays(componentsData.get(componentId) ?? [], data.status))) {
+            componentsData.set(componentId, data.status);
         }
     });
+
+    return (
+        <>
+        </>
+    )
 }
