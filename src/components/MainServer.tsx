@@ -1,24 +1,47 @@
 
-export const MainServer = () => {
-    // const [mainServer, setMainServer] = useState<string>("192.168.10.54");
-    //
-    // const socket = useSocketConnection("http://192.168.10.44:3001");
+"use client"
 
-    // useSocketEvent(socket, "test", (data: string) => {
-    //     setMainServer(data);
-    // });
-    // const mainServer:string = "192.168.10.58";
+import {useEffect, useState} from "react";
+import {componentsData} from "@/app/api/SocketEventHandler";
 
-    const mainServer: string = "192.168.10.58";
+type MainServerProps = {
+    id: string
+    ip: string
+    status: string[]
+    isSocketAlive: string
+}
+
+export const MainServer = ({id, ip, status, isSocketAlive}: MainServerProps) => {
+    const [color , setColor] = useState("border-errorRed");
+
+    useEffect(() => {
+        setInterval(() => {
+            if (!componentsData.get(id)) {
+                const finalStatus = status;
+                finalStatus.push(isSocketAlive);
+                componentsData.set(id, finalStatus);
+            }
+            switch ((componentsData.get(id) ?? ["false"])[0]) {
+                case "true":
+                    if ((componentsData.get(id) ?? ["false"])[((componentsData.get(id) ?? ["false"]).length) - 1] === "false") {
+                        setColor("border-warningYellow");
+                        break;
+                    }
+                    setColor("border-validGreen");
+                    break;
+                case "false":
+                    setColor("border-errorRed");
+                    break;
+                default:
+                    setColor("border-errorRed");
+                    break;
+            }
+        }, 5000);
+    }, [id]);
 
     return (
-        <div>
-            <a className="text-mainWhite font-medium rounded-full border-2 border-validGreen text-sm px-4 py-2 text-center mr-3 md:mr-0">
-                {mainServer}
-            </a>
-            <a className="text-mainWhite ml-4 font-medium rounded-full border-2 border-mainRed text-sm px-4 py-2 text-center mr-3 md:mr-0">
-                192.168.10.44
-            </a>
-        </div>
+        <a className={"text-mainWhite font-medium rounded-full border-2 text-sm px-4 py-2 text-center mr-3 md:mr-0 " + color}>
+            {ip}
+        </a>
     )
 }
