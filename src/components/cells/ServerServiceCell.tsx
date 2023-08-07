@@ -17,11 +17,11 @@ export default function ServerServiceCell({id, name}: ServerServiceCellProps) {
 
     useEffect(() => {
         setInterval(() => {
-            switch(componentsData.get(id) ?? "KO") {
-                case "OK":
+            switch(componentsData.get(id) ?? "false") {
+                case "true":
                     setColor(greenValue);
                     break;
-                case "KO":
+                case "false":
                     setColor(redValue);
                     break;
                 case "PENDING":
