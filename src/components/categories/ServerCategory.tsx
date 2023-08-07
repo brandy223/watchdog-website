@@ -17,12 +17,18 @@ export default function ServerCategory({id, ip, services}: ServerCategoryProps) 
 
     useEffect(() => {
         setInterval(() => {
-            switch(componentsData.get(id) ?? "KO") {
+            switch((componentsData.get(id) ?? ["KO"])[0]) {
                 case "OK":
                     setColor("border-validGreen");
                     break;
                 case "KO":
                     setColor("border-errorRed");
+                    const servicesIdString: string[] = [`2-true-", "-${id.split("-")[2]}`];
+                    for (const [ key, value] of componentsData) {
+                        if (key.startsWith(servicesIdString[0]) && key.endsWith(servicesIdString[1])) {
+                            componentsData.set(key, ["false"]);
+                        }
+                    }
                     break;
                 case "PENDING":
                     setColor("border-warningYellow");
@@ -32,10 +38,9 @@ export default function ServerCategory({id, ip, services}: ServerCategoryProps) 
             }
         }, 5000);
         // TODO: When status KO, need to change state of all services to KO
-    });
+    }, [id]);
 
     return (
-        // <div className={"category-main-field-item w-full flex flex-col justify-center items-center border-4 border-solid border-" + color}>
         <div className={"category-main-field-item w-full flex flex-col justify-center items-center border-4 border-solid " + color}>
             <div className="category-main-field-item-title">{ip}</div>
             <div className="category-main-field flex flex-col">
