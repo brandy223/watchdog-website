@@ -18,7 +18,7 @@ export default function PfSenseServiceCell({id, name, pfSenseRequestId}: PfSense
 
     useEffect(() => {
         setInterval(() => {
-            switch(componentsData.get(id) ?? "stopped") {
+            switch((componentsData.get(id) ?? ["stopped"])[0]) {
                 case "running":
                     setColor(greenValue);
                     break;
@@ -32,7 +32,7 @@ export default function PfSenseServiceCell({id, name, pfSenseRequestId}: PfSense
                     break;
             }
         }, 5000);
-    });
+    }, [id]);
 
     return (
         <div className="category-main-field-sub-item flex flex-row w-full">
