@@ -19,7 +19,7 @@ export const useSocketConnection = (serverUrl: string) => {
     return socket;
 };
 
-export const useSocketEvent = (socket: Socket | null, event: string, callback: Function) => {
+export const useSocketEvent = (socket: Socket | null, event: string, callback: ((data: any) => void)) => {
     useEffect(() => {
         if (socket) {
             socket.on(event, callback);
