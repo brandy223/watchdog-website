@@ -29,6 +29,7 @@
 .category-main-field-sub-item .title {
     color: #FFF;
     margin-left: 15px;
+    font-family: Outfit;
 }
 
 .category-main-field-item-title {
@@ -44,6 +45,8 @@
     line-height: normal;
     text-transform: capitalize;
     color: whitesmoke;
+    font-family: Outfit;
+    font-weight: bold;
 }
 
 .category-title {
@@ -59,4 +62,6 @@
     line-height: normal;
     text-transform: capitalize;
     color: whitesmoke;
+    font-family: Outfit;
+    font-weight: bold;
 }
