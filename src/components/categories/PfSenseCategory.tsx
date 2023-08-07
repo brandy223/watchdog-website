@@ -13,20 +13,11 @@ type PfSenseCategoryProps = {
 }
 
 export default function PfSenseCategory({id, ip, pfSenseServices}: PfSenseCategoryProps) {
-    const [ status, setStatus] = useState<string>("KO");
     const [ color, setColor ] = useState<string>("errorRed");
 
     useEffect(() => {
         setInterval(() => {
-            if (!componentsData.has(id)) {
-                componentsData.set(id, status);
-                return;
-            }
-            if ((componentsData.get(id) as string) !== status) {
-                setStatus(componentsData.get(id) as string);
-            }
-
-            switch(status) {
+            switch(componentsData.get(id) ?? "KO") {
                 case "OK":
                     setColor("validGreen");
                     break;

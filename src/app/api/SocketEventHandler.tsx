@@ -6,7 +6,7 @@ import {useSocketConnection, useSocketEvent} from "@/app/api/socket";
 export const componentsData = new Map<string, string>;
 
 export default function SocketEventHandler() {
-    const socket = useSocketConnection("http://localhost:3001");
+    const socket = useSocketConnection("http://192.168.10.44:3001");
     useSocketEvent(socket, "room_broadcast", (data: any) => {
         if (data === null) return;
 
@@ -41,8 +41,6 @@ export default function SocketEventHandler() {
             default:
                 break;
         }
-        console.log(componentId);
-        console.log(componentsData);
 
         if (!componentsData.has(componentId)) {
             componentsData.set(componentId, data.status[0]);

@@ -10,7 +10,6 @@ type ServerServiceCellProps = {
 }
 
 export default function ServerServiceCell({id, name}: ServerServiceCellProps) {
-    const [ status, setStatus] = useState<string>("KO");
     const greenValue: string = "#75EB18"
     const redValue: string = "#EB1818"
     const orangeValue: string = "#EB9E18"
@@ -18,15 +17,7 @@ export default function ServerServiceCell({id, name}: ServerServiceCellProps) {
 
     useEffect(() => {
         setInterval(() => {
-            if (!componentsData.has(id)) {
-                componentsData.set(id, status);
-                return;
-            }
-            if ((componentsData.get(id) as string) !== status) {
-                setStatus(componentsData.get(id) as string);
-            }
-
-            switch(status) {
+            switch(componentsData.get(id) ?? "KO") {
                 case "OK":
                     setColor(greenValue);
                     break;

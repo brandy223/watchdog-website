@@ -11,8 +11,6 @@ type PfSenseServiceCellProps = {
 }
 
 export default function PfSenseServiceCell({id, name, pfSenseRequestId}: PfSenseServiceCellProps) {
-    const [ status, setStatus] = useState<string>("KO");
-    // TODO: Need to change initial state (wrong one)
     const greenValue: string = "#75EB18"
     const redValue: string = "#EB1818"
     const orangeValue: string = "#EB9E18"
@@ -20,23 +18,11 @@ export default function PfSenseServiceCell({id, name, pfSenseRequestId}: PfSense
 
     useEffect(() => {
         setInterval(() => {
-
-            console.log(componentsData);
-            console.log(id);
-
-            if (!componentsData.has(id)) {
-                componentsData.set(id, status);
-                return;
-            }
-            if ((componentsData.get(id) as string) !== status) {
-                setStatus(componentsData.get(id) as string);
-            }
-
-            switch(status) {
-                case "OK":
+            switch(componentsData.get(id) ?? "stopped") {
+                case "running":
                     setColor(greenValue);
                     break;
-                case "KO":
+                case "stopped":
                     setColor(redValue);
                     break;
                 case "PENDING":
@@ -52,7 +38,7 @@ export default function PfSenseServiceCell({id, name, pfSenseRequestId}: PfSense
         <div className="category-main-field-sub-item flex flex-row w-full">
             <div className="title w-full flex flex-row items-center">
                 {name}
-                {pfSenseRequestId !== null &&
+                {(pfSenseRequestId !== null || undefined) &&
                     <div className="flex flex-end items-center text-white ml-1">
                         / id: {pfSenseRequestId}
                     </div>
