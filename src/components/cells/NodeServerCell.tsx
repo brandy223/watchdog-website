@@ -14,30 +14,40 @@ export default function ServerServiceCell({id, ip}: NodeServerCellProps) {
     const redValue: string = "#EB1818"
     const orangeValue: string = "#EB9E18"
     const [ color, setColor ] = useState<string>(redValue);
+    const [ hover, setHover ] = useState<boolean>(false);
 
     useEffect(() => {
         setInterval(() => {
-            switch(componentsData.get(id) ?? "KO") {
+            switch((componentsData.get(id) ?? ["KO"])[0]) {
                 case "OK":
+                    if ((componentsData.get(id) ?? ["false"])[((componentsData.get(id) ?? ["false"]).length - 1) ?? 0] === "Problem with NodeJS App probably") {
+                        // TODO: hover effect
+                        // TODO: Detect packets loss
+                        setColor(orangeValue);
+                        break;
+                    }
                     setColor(greenValue);
                     break;
                 case "KO":
                     setColor(redValue);
                     break;
-                case "PENDING":
-                    setColor(orangeValue);
-                    break;
                 default:
                     break;
             }
         }, 5000);
-    });
+    }, [id]);
+
+    // const classHover = ""
 
     return (
         <div className="category-main-field-sub-item flex flex-row w-full">
             <div className="title w-full flex items-center">
                 {ip}
             </div>
+            {hover && <div>
+
+            </div>
+            }
             <svg className="mr-2" xmlns="http://www.w3.org/2000/svg" width="34" height="34" viewBox="0 0 34 34" fill="none">
                 <g filter="url(#filter0_f_236_28)">
 
