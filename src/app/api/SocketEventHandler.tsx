@@ -7,9 +7,11 @@ import {compareArrays} from "@/utils";
 export const componentsData = new Map<string, string[]>;
 
 export default function SocketEventHandler() {
+    // TODO: Replace by db value
     const socket = useSocketConnection("http://192.168.10.44:3001");
     useSocketEvent(socket, "room_broadcast", async (data: any) => {
         if (data === null) return;
+        console.log(data);
 
         let componentId: string = "";
         switch(data.messageType) {
