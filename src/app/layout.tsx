@@ -19,9 +19,6 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-      <style>
-        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@200&display=swap');
-      </style>
         <NavBar />
         {children}
         <Footer />
