@@ -14,6 +14,13 @@ type ServerCategoryProps = {
 
 export default function ServerCategory({id, ip, services}: ServerCategoryProps) {
     const [ color, setColor ] = useState<string>("border-errorRed");
+    const [ isHovering, setIsHovered ] = useState<boolean>(false);
+    const onMouseEnter = () => {
+        setIsHovered(true);
+    }
+    const onMouseLeave = () => {
+        setIsHovered(false);
+    }
 
     useEffect(() => {
         setInterval(() => {
@@ -41,11 +48,20 @@ export default function ServerCategory({id, ip, services}: ServerCategoryProps) 
     }, [id]);
 
     return (
-        <div className={"category-main-field-item w-full flex flex-col justify-center items-center border-4 border-solid " + color}>
+        <div className={"category-main-field-item w-full flex flex-col justify-center items-center border-4 border-solid " + color}
+             onMouseEnter={onMouseEnter}
+             onMouseLeave={onMouseLeave}
+        >
             <div className="category-main-field-item-title">{ip}</div>
             <div className="category-main-field flex flex-col">
-                {services.map(
-                    (service: Services) => <ServerServiceCell key={service.id} id={`2-true-${service.id}-${id.split("-")[2]}`} name={service.name} />
+                {!color.includes("border-errorRed") &&
+                    services.map(
+                    (service: Services) => <ServerServiceCell
+                        key={service.id}
+                        id={`2-true-${service.id}-${id.split("-")[2]}`}
+                        name={service.name}
+                        isHovering={isHovering}
+                    />
                 )}
             </div>
         </div>
