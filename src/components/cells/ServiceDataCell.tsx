@@ -26,7 +26,7 @@ export default function ServiceDataCell({id, name}: ServiceDataCellProps) {
 
     return (
         <div className="category-main-field-sub-item flex flex-row w-full">
-            <div className="title w-full flex items-center">
+            <div className="title w-full flex items-center truncate ">
                 {name}
             </div>
             <div className="w-10 text-white mr-2">

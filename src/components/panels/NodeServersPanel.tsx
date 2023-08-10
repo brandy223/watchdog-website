@@ -15,7 +15,7 @@ async function getAllNodeServersAssignedToJobs(): Promise<Servers[]> {
 export default async function NodeServersPanel() {
     const nodeServers: Servers[] = await getAllNodeServersAssignedToJobs();
     return (
-        <div className="category-container flex flex-col justify-center items-center mt-10">
+        <div className="category-container flex flex-col justify-center items-center mt-4">
             <div className="category-title">Node Servers</div>
             <div className="category-main-field flex flex-col">
                 {nodeServers.map(

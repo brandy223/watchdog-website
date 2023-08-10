@@ -37,17 +37,14 @@ export default function PfSenseServiceCell({id, name, pfSenseRequestId, isHoveri
         }, 5000);
     }, [id]);
 
+    if (pfSenseRequestId !== null) name += " / id: " + pfSenseRequestId
+
     return (
         <div>
             {(!hidden || isHovering) &&
                 <div className="category-main-field-sub-item flex flex-row w-full">
-                    <div className="title w-full flex flex-row items-center">
+                    <div className="title w-full flex flex-row items-center truncate">
                         {name}
-                        {(pfSenseRequestId !== null || undefined) &&
-                            <div className="flex flex-end items-center text-white ml-1">
-                                / id: {pfSenseRequestId}
-                            </div>
-                        }
                     </div>
                     <svg className="mr-2" xmlns="http://www.w3.org/2000/svg" width="34" height="34" viewBox="0 0 34 34" fill="none">
                         <g filter="url(#filter0_f_236_28)">

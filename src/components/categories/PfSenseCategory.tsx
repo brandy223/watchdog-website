@@ -48,11 +48,11 @@ export default function PfSenseCategory({id, ip, pfSenseServices}: PfSenseCatego
     }, [id]);
 
     return (
-        <div className={"category-main-field-item w-full flex flex-col justify-center items-center border-4 border-solid border-" + color}
+        <div className={"category-main-field-item h-fit flex flex-col flex-grow justify-center items-center border-4 border-solid border-" + color}
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
         >
-            <div className="category-main-field-item-title">{ip}</div>
+            <div className="category-main-field-item-title truncate">{ip}</div>
             <div className="category-main-field flex flex-col">
                 {!color.includes("errorRed") &&
                     pfSenseServices.map(

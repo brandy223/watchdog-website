@@ -48,11 +48,11 @@ export default function ServerCategory({id, ip, services}: ServerCategoryProps) 
     }, [id]);
 
     return (
-        <div className={"category-main-field-item w-full flex flex-col justify-center items-center border-4 border-solid " + color}
+        <div className={"category-main-field-item h-fit flex flex-col flex-grow justify-center items-center border-4 border-solid " + color}
              onMouseEnter={onMouseEnter}
              onMouseLeave={onMouseLeave}
         >
-            <div className="category-main-field-item-title">{ip}</div>
+            <div className="category-main-field-item-title truncate">{ip}</div>
             <div className="category-main-field flex flex-col">
                 {!color.includes("border-errorRed") &&
                     services.map(

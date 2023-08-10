@@ -21,7 +21,7 @@ export default async function ServicesDataPanel() {
     return (
         <div className="category-container flex flex-col justify-center items-center">
             <div className="category-title">Services</div>
-            <div className="category-main-field flex flex-col">
+            <div className="category-main-field flex flex-wrap">
                 {services.map((service: Services) =>
                     <ServiceDataCategory key={service.id} id={service.id} name={service.name} />
                 )}

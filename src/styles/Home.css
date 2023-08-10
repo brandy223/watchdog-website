@@ -2,7 +2,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@200&display=swap');
 
 .category-container {
-    width: 403px;
+    width: 500px;
     border-radius: 20px;
     background: linear-gradient(135deg, #303841 64.58%, rgba(66, 71, 75, 0.67) 100%);
     box-shadow: -5px 7px 4px 0px rgba(0, 0, 0, 0.25);
@@ -20,6 +20,7 @@
 .category-main-field-item {
     border-radius: 17px;
     background: #3A4750;
+    width: 33%;
 }
 
 .category-main-field-sub-item {

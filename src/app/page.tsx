@@ -8,8 +8,8 @@ import SocketEventHandler from "@/app/api/SocketEventHandler";
 
 export default async function Home() {
     return (
-        <div className="xl:mx-40 lg:mx-20 md:mx-0 mx-auto">
-            <div className="flex flex-row justify-around mt-20 w-full items-start">
+        <div className="mx-auto">
+            <div className="flex flex-row justify-around mt-10 w-full items-start">
                 <SocketEventHandler />
                 <div className="flex flex-col">
                     <ServerServicesPanel />

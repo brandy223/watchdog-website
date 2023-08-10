@@ -41,7 +41,7 @@ export default function ServerServiceCell({id, name, isHovering}: ServerServiceC
         <div>
             {(!hidden || isHovering) &&
                 <div className="category-main-field-sub-item flex flex-row w-full">
-                    <div className="title w-full flex items-center">
+                    <div className="title w-full flex items-center truncate">
                         {name}
                     </div>
                     <svg className="mr-2" xmlns="http://www.w3.org/2000/svg" width="34" height="34" viewBox="0 0 34 34" fill="none">
