@@ -16,7 +16,7 @@ export default function SocketEventHandler() {
         let componentId: string = "";
         switch(data.messageType) {
             case 1:
-                componentId = `1-false-${data.server.id}-0`;
+                componentId = `1-false-${data.server.id}-${data.serverType}`;
                 let stringValues: string[];
                 if (!componentsData.has(componentId)) {
                     stringValues = [data.status];
