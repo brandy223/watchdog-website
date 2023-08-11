@@ -30,7 +30,6 @@ enum ServerStatus {
 
 model Servers {
   id          Int                 @id @default(autoincrement())
-  ipAddr      String              @unique @db.VarChar(64)
   type        ServerStatus        @default(Normal)
   port        Int?                @db.MediumInt
   priority    Int?                @db.TinyInt
