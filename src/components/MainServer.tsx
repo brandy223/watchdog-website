@@ -21,15 +21,15 @@ export const MainServer = ({id, ip, status, isSocketAlive}: MainServerProps) => 
                 finalStatus.push(isSocketAlive);
                 componentsData.set(id, finalStatus);
             }
-            switch ((componentsData.get(id) ?? ["false"])[0]) {
-                case "true":
+            switch (((componentsData.get(id) ?? ["false"])[0])) {
+                case "OK":
                     if ((componentsData.get(id) ?? ["false"])[((componentsData.get(id) ?? ["false"]).length) - 1] === "false") {
                         setColor("border-warningYellow");
                         break;
                     }
                     setColor("border-validGreen");
                     break;
-                case "false":
+                case "KO":
                     setColor("border-errorRed");
                     break;
                 default:

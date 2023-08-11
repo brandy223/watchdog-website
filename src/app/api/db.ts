@@ -21,6 +21,7 @@ export async function getCentralServersAndInfo(): Promise<Map<string[], [string[
     const centralServers: Servers[] = await prisma.servers.findMany({ where: { type: "Central" }});
     for (const server of centralServers) {
         const info: string[] = await ping(server.ipAddr);
+        info.unshift(Boolean(info[1]) ? "OK" : "KO");
         if (server.port !== null) centralServersInfo.set(
             [server.ipAddr, server.port.toString(), server.priority ? server.priority.toString() : "1", server.id.toString()],
             [info, await testConnectionToSocket(server.ipAddr, server.port)]
