@@ -2,16 +2,19 @@
 "use client"
 
 import {useSocketConnection, useSocketEvent} from "@/app/api/socket";
-import {compareArrays} from "@/utils";
+import {compareArrays} from "@/app/api/utils";
 
 export const componentsData = new Map<string, string[]>;
 
-export default function SocketEventHandler() {
-    // TODO: Replace by db value
-    const socket = useSocketConnection("http://192.168.10.44:3001");
+type SocketEventHandlerProps = {
+    serverIp: string
+    serverPort: string
+}
+
+export default function SocketEventHandler({serverIp, serverPort}: SocketEventHandlerProps) {
+    const socket = useSocketConnection(`http://${serverIp}:${serverPort}`);
     useSocketEvent(socket, "room_broadcast", async (data: any) => {
         if (data === null) return;
-        console.log(data);
 
         let componentId: string = "";
         switch(data.messageType) {
