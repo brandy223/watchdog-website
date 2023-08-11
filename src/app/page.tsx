@@ -7,8 +7,6 @@ import ServicesDataPanel from "@/components/panels/ServicesDataPanel";
 import SocketEventHandler from "@/app/api/SocketEventHandler";
 import {getCentralServersAndInfo} from "@/app/api/db";
 
-
-
 export default async function Home() {
     const centralServers: Map<string[], [string[], boolean]> = await getCentralServersAndInfo();
 
