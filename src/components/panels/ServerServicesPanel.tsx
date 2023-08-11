@@ -37,7 +37,7 @@ export default async function ServerServicesPanel() {
     return (
         <div className="category-container flex flex-col justify-center items-center">
             <div className="category-title">Servers and Services</div>
-            <div className="category-main-field flex flex-row">
+            <div className="category-main-field flex flex-wrap">
                 {servers.map(
                     async (server: Servers) => <ServerCategory key={server.id} id={`1-false-${server.id}-0`} ip={server.ipAddr} services={await getServicesOfServerById(server.id)}/>
                 )}
