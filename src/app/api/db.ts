@@ -22,7 +22,7 @@ export async function getCentralServersAndInfo(): Promise<Map<string[], [string[
     for (const server of centralServers) {
         const info: string[] = await ping(server.ipAddr);
         if (server.port !== null) centralServersInfo.set(
-            [server.ipAddr, server.port.toString(), server.priority.toString(), server.id.toString()],
+            [server.ipAddr, server.port.toString(), server.priority ? server.priority.toString() : "1", server.id.toString()],
             [info, await testConnectionToSocket(server.ipAddr, server.port)]
         );
     }
