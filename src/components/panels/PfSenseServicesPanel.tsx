@@ -33,7 +33,7 @@ export default async function PfSenseServicesPanel() {
     return (
         <div className="category-container flex flex-col justify-center items-center">
             <div className="category-title">Pf Sense</div>
-            <div className="category-main-field flex flex-col">
+            <div className="category-main-field flex flex-wrap">
                 {pfSenses.map(
                     async (pfSense: PfSenses) => <PfSenseCategory key={pfSense.id} id={`1-false-${pfSense.id}-1`} ip={pfSense.ip} pfSenseServices={await getPfSenseServicesByPfSenseId(pfSense.id)} />
                 )}

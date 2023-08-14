@@ -1,3 +1,29 @@
+import {Servers} from "@prisma/client";
+import {prisma} from "@/app/api/db";
+
+
+/**
+ * Test connection with server socket
+ * @param {string} ip
+ * @param {number} port
+ * @returns {Promise<boolean>} True if the connection is established, false otherwise
+ */
+export function testConnectionToSocket (ip: string, port: number) : Promise<boolean> {
+    const socket = require('socket.io-client')(`http://${ip}:${port}`);
+    return new Promise((resolve, reject): void => {
+        socket.on('connect', (): void => {
+            socket.emit("test_connection", "OK");
+        });
+        socket.on("test_connection_ack", (message: string): void => {
+            resolve(true);
+            socket.disconnect();
+        });
+        socket.on('connect_error', (): void => {
+            resolve(false);
+            socket.disconnect();
+        });
+    });
+}
 
 /**
  * Compare 2 arrays
@@ -23,7 +49,7 @@ export async function compareArrays(a: any[], b: any[]): Promise<boolean> {
  * @returns {Promise<string[]>} True if the IP Address is reachable, false otherwise + ping info
  */
 export async function ping (ip: string) : Promise<string[]> {
-    const config = require("../config.json");
+    const config = require("../../../config.json");
     const pingConfig = {
         timeout: config.ping.timeout,
         extra: config.ping.extra,

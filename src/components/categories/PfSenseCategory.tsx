@@ -14,6 +14,13 @@ type PfSenseCategoryProps = {
 
 export default function PfSenseCategory({id, ip, pfSenseServices}: PfSenseCategoryProps) {
     const [ color, setColor ] = useState<string>("errorRed");
+    const [ isHovering, setIsHovered ] = useState<boolean>(false);
+    const onMouseEnter = () => {
+        setIsHovered(true);
+    }
+    const onMouseLeave = () => {
+        setIsHovered(false);
+    }
 
     useEffect(() => {
         setInterval(() => {
@@ -41,13 +48,21 @@ export default function PfSenseCategory({id, ip, pfSenseServices}: PfSenseCatego
     }, [id]);
 
     return (
-        <div className={"category-main-field-item w-full flex flex-col justify-center items-center border-4 border-solid border-" + color}>
-            <div className="category-main-field-item-title">{ip}</div>
+        <div className={"category-main-field-item h-fit flex flex-col flex-grow justify-center items-center border-4 border-solid border-" + color}
+            onMouseEnter={onMouseEnter}
+            onMouseLeave={onMouseLeave}
+        >
+            <div className="category-main-field-item-title truncate">{ip}</div>
             <div className="category-main-field flex flex-col">
-                {pfSenseServices.map(
+                {!color.includes("errorRed") &&
+                    pfSenseServices.map(
                     (pfSenseService: PfSenseServices) =>
                         <PfSenseServiceCell
-                            key={pfSenseService.id} id={`3-true-${pfSenseService.id}-${id.split("-")[2]}`} name={pfSenseService.name} pfSenseRequestId={pfSenseService.pfSenseRequestId}
+                            key={pfSenseService.id}
+                            id={`3-true-${pfSenseService.id}-${id.split("-")[2]}`}
+                            name={pfSenseService.name}
+                            pfSenseRequestId={pfSenseService.pfSenseRequestId}
+                            isHovering={isHovering}
                         />
                 )}
             </div>
