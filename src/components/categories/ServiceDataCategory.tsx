@@ -20,7 +20,7 @@ export default async function ServiceDataCategory({id, name}: ServiceDataCategor
     const servicesData: ServicesData[] = await getAllServicesDataOfServiceById(id);
 
     return (
-        <div className="category-main-field-item h-fit flex flex-col flex-grow justify-center items-center" style={{border: 0}}>
+        <div className="category-main-field-item h-fit flex flex-col justify-center items-center" style={{border: 0}}>
             <div className="category-main-field-item-title truncate">{name}</div>
             <div className="category-main-field flex flex-col">
                 {servicesData.map((serviceData: ServicesData) =>

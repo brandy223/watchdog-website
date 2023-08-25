@@ -48,7 +48,7 @@ export default function PfSenseCategory({id, ip, pfSenseServices}: PfSenseCatego
     }, [id]);
 
     return (
-        <div className={"category-main-field-item h-fit flex flex-col flex-grow justify-center items-center border-4 border-solid border-" + color}
+        <div className={"category-main-field-item h-fit flex flex-col justify-center items-center border-4 border-solid border-" + color}
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
         >
