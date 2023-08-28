@@ -5,6 +5,7 @@ import {PfSenseServices} from "@prisma/client";
 import PfSenseServiceCell from "@/components/cells/PfSenseServiceCell";
 import {useEffect, useState} from "react";
 import {componentsData} from "@/app/api/SocketEventHandler";
+import { twMerge } from "tailwind-merge";
 
 type PfSenseCategoryProps = {
     id: string
@@ -49,6 +50,7 @@ export default function PfSenseCategory({id, ip, pfSenseServices}: PfSenseCatego
 
     return (
         <div className={"category-main-field-item h-fit flex flex-col justify-center items-center border-4 border-solid border-" + color}
+             style={{width: "50%"}}
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
         >
