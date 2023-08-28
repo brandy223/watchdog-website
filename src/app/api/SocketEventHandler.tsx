@@ -38,6 +38,8 @@ export default function SocketEventHandler({serverIp, serverPort}: SocketEventHa
                 break;
             case 3:
                 componentId = `3-true-${data.pfSenseService.id}-${data.pfSense.id}`;
+                console.log(componentId);
+                console.log(data);
                 break;
             case 4:
                 componentId = `4-true-${data.serviceData.id}-${data.service.id}`;
