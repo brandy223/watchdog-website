@@ -17,6 +17,8 @@ export default function PfSenseServiceCell({id, name, isHovering}: PfSenseServic
     const [ color, setColor ] = useState<string>(redValue);
     const [ hidden, setHidden ] = useState<boolean>(false);
 
+    console.log(id);
+
     useEffect(() => {
         setInterval(() => {
             switch((componentsData.get(id) ?? ["stopped"])[0]) {
