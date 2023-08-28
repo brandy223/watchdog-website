@@ -7,11 +7,10 @@ import {componentsData} from "@/app/api/SocketEventHandler";
 type PfSenseServiceCellProps = {
     id: string
     name: string
-    pfSenseRequestId: number | null
     isHovering: boolean
 }
 
-export default function PfSenseServiceCell({id, name, pfSenseRequestId, isHovering}: PfSenseServiceCellProps) {
+export default function PfSenseServiceCell({id, name, isHovering}: PfSenseServiceCellProps) {
     const greenValue: string = "#75EB18"
     const redValue: string = "#EB1818"
     const orangeValue: string = "#EB9E18"
@@ -36,8 +35,6 @@ export default function PfSenseServiceCell({id, name, pfSenseRequestId, isHoveri
             }
         }, 5000);
     }, [id]);
-
-    if (pfSenseRequestId !== null) name += " / id: " + pfSenseRequestId
 
     return (
         <div>
