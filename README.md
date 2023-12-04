@@ -1,5 +1,5 @@
 
-# Node Watchdog
+# Watchdog Website
 
 <img src="docs/img/preview.png" alt="website_preview">
 
